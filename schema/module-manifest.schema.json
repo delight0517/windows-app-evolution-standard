@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/delight0517/windows-app-evolution-standard/blob/main/schema/module-manifest.schema.json",
+  "title": "Windows App Evolution module manifest",
+  "type": "object",
+  "required": ["api_version", "modules"],
+  "properties": {
+    "api_version": {"type": "integer", "minimum": 1},
+    "watch_allowlist": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/moduleId"}},
+    "modules": {"type": "array", "items": {"$ref": "#/$defs/module"}}
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "moduleId": {"type": "string", "pattern": "^[a-z][a-z0-9_-]{0,63}$"},
+    "module": {
+      "type": "object",
+      "required": ["id", "path", "version", "api_version", "dependencies", "reloadable", "restart_required", "auto_watch", "lifecycle"],
+      "properties": {
+        "id": {"$ref": "#/$defs/moduleId"},
+        "path": {"type": "string", "pattern": "^(modules|extensions)/[^\\\\:]+\\.(py|js|ts|dll|so|dylib)$"},
+        "version": {"type": "string", "minLength": 1},
+        "api_version": {"type": "integer", "minimum": 1},
+        "dependencies": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/moduleId"}},
+        "reloadable": {"type": "boolean"},
+        "restart_required": {"type": "boolean"},
+        "auto_watch": {"type": "boolean"},
+        "lifecycle": {
+          "type": "object",
+          "required": ["initialize", "dispose"],
+          "properties": {
+            "initialize": {"type": "string", "minLength": 1},
+            "dispose": {"type": "string", "minLength": 1},
+            "snapshot_state": {"type": "string", "minLength": 1},
+            "restore_state": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
+

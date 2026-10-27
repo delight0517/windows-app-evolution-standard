@@ -1,0 +1,34 @@
+{
+  "api_version": 1,
+  "watch_allowlist": ["theme-policy"],
+  "modules": [
+    {
+      "id": "design-tokens",
+      "path": "modules/design_tokens.py",
+      "version": "1.0.0",
+      "api_version": 1,
+      "dependencies": [],
+      "reloadable": true,
+      "restart_required": false,
+      "auto_watch": false,
+      "lifecycle": {"initialize": "initialize", "dispose": "shutdown"}
+    },
+    {
+      "id": "theme-policy",
+      "path": "modules/theme_policy.py",
+      "version": "1.0.0",
+      "api_version": 1,
+      "dependencies": ["design-tokens"],
+      "reloadable": true,
+      "restart_required": false,
+      "auto_watch": true,
+      "lifecycle": {
+        "initialize": "initialize",
+        "dispose": "shutdown",
+        "snapshot_state": "snapshot_state",
+        "restore_state": "restore_state"
+      }
+    }
+  ]
+}
+
